@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -41,33 +40,18 @@ export default function AuthForm() {
     <form className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md" onSubmit={handleSubmit}>
       <h2 className="text-3xl font-bold mb-6 text-center text-red-600">Sign Up</h2>
       {error && <div className="mb-4 text-red-600 text-center">{error}</div>}
-=======
-import { Link } from "react-router-dom";
-
-export default function AuthForm() {
-  return (
-    <form className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-      <h2 className="text-3xl font-bold mb-6 text-center text-red-600">Sign Up</h2>
-
->>>>>>> 776b00cd40d1fea810b61d41064a12f94d76e14c
       <div className="mb-4">
-        <label className="block mb-1 font-semibold text-gray-700">Full Name</label>
+        <label className="block mb-1 font-semibold text-gray-700">Name</label>
         <input
           type="text"
           name="name"
           placeholder="John Doe"
           className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
           required
-<<<<<<< HEAD
           value={form.name}
           onChange={handleChange}
         />
       </div>
-=======
-        />
-      </div>
-
->>>>>>> 776b00cd40d1fea810b61d41064a12f94d76e14c
       <div className="mb-4">
         <label className="block mb-1 font-semibold text-gray-700">Email</label>
         <input
@@ -76,16 +60,10 @@ export default function AuthForm() {
           placeholder="you@example.com"
           className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
           required
-<<<<<<< HEAD
           value={form.email}
           onChange={handleChange}
         />
       </div>
-=======
-        />
-      </div>
-
->>>>>>> 776b00cd40d1fea810b61d41064a12f94d76e14c
       <div className="mb-4">
         <label className="block mb-1 font-semibold text-gray-700">Password</label>
         <input
@@ -94,27 +72,18 @@ export default function AuthForm() {
           placeholder="••••••••"
           className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
           required
-<<<<<<< HEAD
           value={form.password}
           onChange={handleChange}
         />
       </div>
-=======
-        />
-      </div>
-
->>>>>>> 776b00cd40d1fea810b61d41064a12f94d76e14c
       <div className="mb-6">
         <label className="block mb-1 font-semibold text-gray-700">Role</label>
         <select
           name="role"
           className="w-full border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
           required
-<<<<<<< HEAD
           value={form.role}
           onChange={handleChange}
-=======
->>>>>>> 776b00cd40d1fea810b61d41064a12f94d76e14c
         >
           <option value="">Select Role</option>
           <option value="user">User</option>
@@ -122,7 +91,6 @@ export default function AuthForm() {
           <option value="admin">Admin</option>
         </select>
       </div>
-<<<<<<< HEAD
       <button
         type="submit"
         className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition duration-200"
@@ -130,16 +98,6 @@ export default function AuthForm() {
       >
         {loading ? "Signing Up..." : "Sign Up"}
       </button>
-=======
-
-      <button
-        type="submit"
-        className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition duration-200"
-      >
-        Sign Up
-      </button>
-
->>>>>>> 776b00cd40d1fea810b61d41064a12f94d76e14c
       <p className="text-center text-sm text-gray-600 mt-4">
         Already have an account?{" "}
         <Link to="/login" className="text-blue-600 hover:underline">
