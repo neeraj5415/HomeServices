@@ -13,7 +13,7 @@ export default function BookingHistory(){
                             <p className="font-semibold ">booking.service</p>
                             <p className="text-sm ">booking.date at booking.time</p>
                         </div>
-                        <span className="px-3 py-1 rounded text-black text-sm font-medium bg-green-600 ml-5">Complated</span>
+                        <span className="px-3 py-1 rounded text-black text-sm font-medium bg-green-600 ml-5">Completed</span>
                     </div>
                 </div>
             </div>
