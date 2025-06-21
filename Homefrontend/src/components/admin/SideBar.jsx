@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 export default function AdminSidebar() {
   return (
-    <aside className="w-64 min-h-screen bg-gray-800 text-white p-4 space-y-4">
-      <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
-      <nav className="flex flex-col space-y-3">
+    <aside className="w-84 text-shadow-lg min-h-screen bg-red-100 p-4 space-y-4">
+      <h2 className="text-shadow-lg text-xl font-bold mb-6">Admin Panel</h2>
+      <nav className="flex flex-col space-y-6 mt-5 text-xl">
         <Link to="/admin/dashboard" className="hover:text-yellow-400">Dashboard</Link>
         <Link to="/admin/users" className="hover:text-yellow-400">Users</Link>
         <Link to="/admin/providers" className="hover:text-yellow-400">Providers</Link>

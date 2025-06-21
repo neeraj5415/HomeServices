@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Sidebar from '../../components/admin/SideBar.jsx'
 
 // Sample static bookings data
 const initialBookings = [
@@ -58,21 +59,22 @@ export default function AdminBooking() {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen w-full">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">All Bookings</h1>
+    <div className="flex min-h-screen">
+      <Sidebar />
+      <div className="p-6 bg-gray-100 w-full">
+      <h1 className="text-shadow-lg text-3xl font-bold text-gray-800 mb-6">All Bookings</h1>
 
       {/* Search Bar */}
-      <div className="mb-6">
+      <div className="mb-6 mt-6">
         <input
           type="text"
           placeholder="Search by date, provider, or location"
-          className="w-full max-w-lg px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full max-w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
-      {/* Booking List */}
       <div className="space-y-4">
         {filteredBookings.length === 0 ? (
           <p className="text-gray-500">No bookings found.</p>
@@ -80,7 +82,7 @@ export default function AdminBooking() {
           filteredBookings.map((booking) => (
             <div
               key={booking.id}
-              className="bg-white shadow-md rounded-xl p-5 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
+              className="bg-green-100 shadow-md rounded-xl p-5 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
             >
               <div>
                 <p className="text-sm text-gray-500">Booking Time:</p>
@@ -133,6 +135,7 @@ export default function AdminBooking() {
             </div>
           ))
         )}
+      </div>
       </div>
     </div>
   );
