@@ -27,7 +27,12 @@ const initialRequests = [
 
 export default function UsersRequests() {
   const [requests, setRequests] = useState(initialRequests);
-  const navigate = useNavigate();
+  const [showPaymentForm, setShowPaymentForm] = useState(null);
+  const [paymentDetails, setPaymentDetails] = useState({
+    accessories: "",
+    amount: "",
+    note: "",
+  });
 
   const handleAccept = (id) => {
     const updated = requests.map((req) =>
@@ -36,15 +41,25 @@ export default function UsersRequests() {
     setRequests(updated);
   };
 
-  const handleCompleteAndPay = (id) => {
-    navigate(`/provider/payment/${id}`);
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setPaymentDetails((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleConfirmPayment = (id) => {
+    alert(
+      `Payment confirmed for Booking #${id}\nAccessories: ${paymentDetails.accessories}\nAmount: ₹${paymentDetails.amount}\nNote: ${paymentDetails.note}`
+    );
+    window.open("https://pay.google.com/", "_blank"); // mock Google Pay
+    // window.open("https://razorpay.com/payment-button/", "_blank"); // Or Razorpay
+    setShowPaymentForm(null); // hide form after payment
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen pt-24">
       <Sidebar />
-      <main className="flex-1 p-6">
-        <h2 className="text-2xl font-bold text-shadow-lg mb-6">
+      <main className="flex-1 p-6 rounded-xl">
+        <h2 className="text-2xl font-bold mb-6 text-shadow-lg">
           User Booking Requests
         </h2>
 
@@ -92,7 +107,11 @@ export default function UsersRequests() {
 
                     {req.status === "Accepted" && (
                       <button
-                        onClick={() => handleCompleteAndPay(req.id)}
+                        onClick={() =>
+                          setShowPaymentForm(
+                            showPaymentForm === req.id ? null : req.id
+                          )
+                        }
                         className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
                       >
                         Complete Task & Collect Payment
@@ -100,6 +119,44 @@ export default function UsersRequests() {
                     )}
                   </div>
                 </div>
+
+                {/* Payment Form */}
+                {showPaymentForm === req.id && (
+                  <div className="mt-4 bg-blue-100 p-4 rounded shadow">
+                    <h4 className="font-semibold text-lg mb-2 text-shadow-lg">Enter Payment Details</h4>
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        name="accessories"
+                        placeholder="Accessories Used"
+                        value={paymentDetails.accessories}
+                        onChange={handleFormChange}
+                        className="w-full border px-4 py-2 rounded m-2"
+                      />
+                      <input
+                        type="number"
+                        name="amount"
+                        placeholder="Total Amount (₹)"
+                        value={paymentDetails.amount}
+                        onChange={handleFormChange}
+                        className="w-full border px-4 py-2 rounded m-2"
+                      />
+                      <textarea
+                        name="note"
+                        placeholder="Additional Note"
+                        value={paymentDetails.note}
+                        onChange={handleFormChange}
+                        className="w-full border px-4 py-2 rounded m-2"
+                      />
+                      <button
+                        onClick={() => handleConfirmPayment(req.id)}
+                        className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition m-2"
+                      >
+                        Confirm Payment
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>

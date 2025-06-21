@@ -1,16 +1,30 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-export default function Sidebar(){
-    return(
-        <div>
-             <aside className="w-64 bg-red-100 text-shadow-lg h-screen p-6">
-                <h2 className="text-xl font-bold mb-6">User Panel</h2>
-                <nav className="space-y-3 text-lg mt-6">
-                    <Link to="/UserProfile" className="block px-4 py-2 rounded hover:bg-red-300">Profile</Link>
-                    <Link to="/BookingHistory" className="block px-4 py-2 rounded hover:bg-red-300">Booking History</Link>
-                    <Link to="/Settings" className="block px-4 py-2 rounded hover:bg-red-300">Settings</Link>
-                </nav>
-            </aside>
-        </div>
-    )
+export default function Sidebar() {
+  const location = useLocation();
+
+  const linkClass = (path) =>
+    `block px-4 py-2 rounded transition ${
+      location.pathname === path ? "bg-red-300 text-white" : "hover:bg-red-200"
+    }`;
+
+  return (
+    <aside className="w-64 bg-red-100 text-shadow-lg h-screen p-6 rounded-xl">
+      <h2 className="text-xl font-bold mb-6">User Panel</h2>
+      <nav className="space-y-3 text-lg mt-6">
+        <Link to="/user/UserDashbord" className={linkClass("/user/UserDashbord")}>
+            Dashboard
+          </Link>
+        <Link to="/user/profile" className={linkClass("/user/profile")}>
+          Profile
+        </Link>
+        <Link to="/user/bookings" className={linkClass("/user/bookings")}>
+          Booking History
+        </Link>
+        <Link to="/user/settings" className={linkClass("/user/settings")}>
+          Settings
+        </Link>
+      </nav>
+    </aside>
+  );
 }

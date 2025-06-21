@@ -6,9 +6,9 @@ import Sidebar from '../../components/admin/SideBar.jsx'
 
 export default function ServicesSection() {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen pt-30">
         <Sidebar/>
-    <div className="p-6 w-full">
+    <div className="p-6 w-full rounded-xl">
       <h2 className="text-3xl font-bold text-shadow-lg mb-6">
         Our Services
       </h2>

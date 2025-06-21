@@ -1,4 +1,5 @@
 import Sidebar from "../../components/provider/Sidebar";
+import ReviewList from "../../components/review/ReviewList";
 import { useState } from "react";
 
 export default function ProviderProfile() {
@@ -10,6 +11,19 @@ export default function ProviderProfile() {
     experience: "5 years",
   });
 
+  const userReviews = [
+    {
+      reviewerName: "Neeraj Kumar",
+      rating: 5,
+      comment: "Raj was extremely professional and solved the issue quickly.",
+    },
+    {
+      reviewerName: "Ritika Singh",
+      rating: 4,
+      comment: "Came on time and completed the work neatly.",
+    },
+  ];
+
   const handleChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
@@ -17,14 +31,13 @@ export default function ProviderProfile() {
   const handleSubmit = (e) => {
     e.preventDefault();
     alert("Profile updated successfully!");
-    // Optionally send updated profile to backend
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen pt-30">
       <Sidebar />
       <main className="flex-1 p-8">
-        <h2 className="text-2xl font-bold mb-6 text-shadow-lg">Provider Profile</h2>
+        <h2 className="text-2xl font-bold mb-6">Provider Profile</h2>
 
         <form
           onSubmit={handleSubmit}
@@ -97,6 +110,10 @@ export default function ProviderProfile() {
             Save Changes
           </button>
         </form>
+
+        <div className="mt-10">
+          <ReviewList title="User Reviews of You" reviews={userReviews} />
+        </div>
       </main>
     </div>
   );

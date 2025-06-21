@@ -26,7 +26,7 @@ export default function BookForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 flex justify-center items-center">
+    <div className="min-h-screen bg-gray-50 p-6 flex justify-center items-center pt-30">
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded-lg p-8 max-w-lg w-full"

@@ -23,9 +23,9 @@ const mockBookings = [
 
 export default function ProviderBookings() {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen pt-30">
       <Sidebar />
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 rounded-xl">
         <h2 className="text-2xl font-bold mb-6 text-shadow-lg">Your Bookings</h2>
 
         <div className="space-y-4">

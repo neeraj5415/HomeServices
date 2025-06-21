@@ -42,9 +42,9 @@ export default function AdminProvider() {
   );
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen pt-30">
       <Sidebar />
-      <div className="p-6 bg-gray-100 w-full">
+      <div className="p-6 bg-gray-100 w-full rounded-xl">
       <h1 className="text-shadow-lg text-3xl font-bold text-gray-800 mb-6">All Providers</h1>
 
       <div className="mb-6 mt-6">

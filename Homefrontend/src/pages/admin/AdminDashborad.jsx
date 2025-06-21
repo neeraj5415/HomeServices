@@ -1,9 +1,9 @@
 import SideBar from '../../components/admin/SideBar.jsx'
 export default function AdminDashboard() {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen pt-30">
       < SideBar />
-    <div className="p-6 bg-gray-100 w-full">
+    <div className="p-6 bg-gray-100 w-full rounded-xl">
       <h1 className="text-3xl font-bold text-shadow-lg mb-6">Admin Dashboard</h1>
       <div className="mb-6 mt-6">
         <input
