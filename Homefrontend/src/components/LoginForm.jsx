@@ -28,7 +28,7 @@ export default function LoginForm() {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);
         // Redirect based on role
-        if (data.user.role === "user") navigate("/user/UserDashbord");
+        if (data.user.role === "user") navigate("/user/UserDashboard");
         else if (data.user.role === "provider") navigate("/provider/dashboard");
         else if (data.user.role === "admin") navigate("/admin/dashboard");
         else navigate("/");
@@ -41,7 +41,10 @@ export default function LoginForm() {
   };
 
   return (
-    <form className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md" onSubmit={handleSubmit}>
+    <form
+      className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md"
+      onSubmit={handleSubmit}
+    >
       <h2 className="text-3xl font-bold mb-6 text-center text-red-600">Login</h2>
       {error && <div className="mb-4 text-red-600 text-center">{error}</div>}
       <div className="mb-4">
