@@ -1,32 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/provider/Sidebar";
 
-const initialRequests = [
-  {
-    id: 101,
-    name: "Amit Verma",
-    email: "amit.verma@gmail.com",
-    service: "AC Repair",
-    date: "2025-06-24",
-    address: "789 Sector 21, Gurugram",
-    notes: "Window AC making noise",
-    status: "Pending",
-  },
-  {
-    id: 102,
-    name: "Riya Mehra",
-    email: "riya.mehra@example.com",
-    service: "Home Cleaning",
-    date: "2025-06-27",
-    address: "23/A Janakpuri, New Delhi",
-    notes: "Full home deep clean needed",
-    status: "Accepted",
-  },
-];
-
 export default function UsersRequests() {
-  const [requests, setRequests] = useState(initialRequests);
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [showPaymentForm, setShowPaymentForm] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState({
     accessories: "",
@@ -34,11 +13,49 @@ export default function UsersRequests() {
     note: "",
   });
 
-  const handleAccept = (id) => {
-    const updated = requests.map((req) =>
-      req.id === id ? { ...req, status: "Accepted" } : req
-    );
-    setRequests(updated);
+  useEffect(() => {
+    const fetchBookings = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:5000/api/bookings/provider", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (!res.ok) setError(data.message || "Failed to fetch requests");
+        else setRequests(data.bookings);
+      } catch (err) {
+        setError("Network error");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBookings();
+  }, []);
+
+  const updateStatus = async (id, status) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`http://localhost:5000/api/bookings/${id}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setRequests((prev) =>
+          prev.map((b) => (b._id === id ? { ...b, status: data.booking.status } : b))
+        );
+      } else {
+        alert(data.message || "Failed to update status");
+      }
+    } catch {
+      alert("Network error");
+    }
   };
 
   const handleFormChange = (e) => {
@@ -63,19 +80,23 @@ export default function UsersRequests() {
           User Booking Requests
         </h2>
 
-        {requests.length === 0 ? (
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p className="text-red-600">{error}</p>
+        ) : requests.length === 0 ? (
           <p className="text-shadow-lg">No requests yet.</p>
         ) : (
           <div className="space-y-4">
             {requests.map((req) => (
               <div
-                key={req.id}
+                key={req._id}
                 className="bg-green-100 p-5 rounded-lg shadow border"
               >
                 <div className="flex justify-between items-start">
                   <div>
                     <h3 className="font-semibold text-blue-600 text-lg">
-                      {req.name} ({req.email})
+                      {req.user?.name} ({req.user?.email})
                     </h3>
                     <p><strong>Service:</strong> {req.service}</p>
                     <p><strong>Date:</strong> {req.date}</p>
@@ -84,44 +105,40 @@ export default function UsersRequests() {
                     <p>
                       <strong>Status:</strong>{" "}
                       <span
-                        className={`${
-                          req.status === "Accepted"
+                        className={`$ {
+                          req.status === "accepted"
                             ? "text-green-600"
+                            : req.status === "cancelled"
+                            ? "text-red-600"
                             : "text-yellow-600"
                         } font-medium`}
                       >
-                        {req.status}
+                        {req.status.charAt(0).toUpperCase() + req.status.slice(1)}
                       </span>
                     </p>
                   </div>
-
                   <div className="flex flex-col gap-2">
-                    {req.status === "Pending" && (
+                    {req.status === "pending" && (
                       <button
-                        onClick={() => handleAccept(req.id)}
+                        onClick={() => updateStatus(req._id, "accepted")}
                         className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
                       >
                         Accept Request
                       </button>
                     )}
-
-                    {req.status === "Accepted" && (
+                    {req.status === "accepted" && (
                       <button
-                        onClick={() =>
-                          setShowPaymentForm(
-                            showPaymentForm === req.id ? null : req.id
-                          )
-                        }
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                        onClick={() => updateStatus(req._id, "cancelled")}
+                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
                       >
-                        Complete Task & Collect Payment
+                        Cancel Request
                       </button>
                     )}
                   </div>
                 </div>
 
                 {/* Payment Form */}
-                {showPaymentForm === req.id && (
+                {showPaymentForm === req._id && (
                   <div className="mt-4 bg-blue-100 p-4 rounded shadow">
                     <h4 className="font-semibold text-lg mb-2 text-shadow-lg">Enter Payment Details</h4>
                     <div className="space-y-3">
@@ -149,7 +166,7 @@ export default function UsersRequests() {
                         className="w-full border px-4 py-2 rounded m-2"
                       />
                       <button
-                        onClick={() => handleConfirmPayment(req.id)}
+                        onClick={() => handleConfirmPayment(req._id)}
                         className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition m-2"
                       >
                         Confirm Payment

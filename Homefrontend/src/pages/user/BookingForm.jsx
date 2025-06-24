@@ -13,6 +13,11 @@ export default function BookForm() {
     notes: "",
   });
 
+  const [bookingConfirmed, setBookingConfirmed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [bookingId, setBookingId] = useState(null);
+  const [error, setError] = useState("");
+
   useEffect(() => {
     // Load Razorpay script
     const script = document.createElement("script");
@@ -28,9 +33,42 @@ export default function BookForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleConfirmBooking = async (e) => {
     e.preventDefault();
-    // Razorpay payment integration
+    setIsSubmitting(true);
+    setError("");
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:5000/api/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          service: serviceName,
+          date: formData.date,
+          address: formData.address,
+          notes: formData.notes,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.message || "Booking failed");
+      } else {
+        setBookingConfirmed(true);
+        setBookingId(data.booking._id);
+        alert("Booking confirmed! You can now proceed to payment.");
+      }
+    } catch (err) {
+      setError("Network error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handlePayment = (e) => {
+    e.preventDefault();
     const options = {
       key: "rzp_test_1DP5mmOlF5G5ag", // Test key
       amount: 50000, // Amount in paise (500.00 INR)
@@ -60,12 +98,12 @@ export default function BookForm() {
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex justify-center items-center pt-30">
       <form
-        onSubmit={handleSubmit}
         className="bg-white shadow-md rounded-lg p-8 max-w-lg w-full"
       >
         <h2 className="text-2xl font-bold text-red-600 mb-6 text-center">
           Book {serviceName}
         </h2>
+        {error && <div className="mb-4 text-red-600 text-center">{error}</div>}
 
         <input
           type="text"
@@ -116,10 +154,20 @@ export default function BookForm() {
         />
 
         <button
-          type="submit"
-          className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition"
+          type="button"
+          onClick={handleConfirmBooking}
+          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition mb-4"
+          disabled={isSubmitting || bookingConfirmed}
         >
-          Confirm and Proceed to Payment
+          {bookingConfirmed ? "Booking Confirmed" : isSubmitting ? "Confirming..." : "Confirm Booking"}
+        </button>
+        <button
+          type="button"
+          onClick={handlePayment}
+          className={`w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition ${!bookingConfirmed ? 'opacity-50 cursor-not-allowed' : ''}`}
+          disabled={!bookingConfirmed}
+        >
+          Make Payment
         </button>
       </form>
     </div>

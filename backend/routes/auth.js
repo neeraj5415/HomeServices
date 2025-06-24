@@ -60,4 +60,55 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Provider seeding endpoint
+router.post('/providers/seed', async (req, res) => {
+  const providers = [
+    { name: 'Plumber', email: 'plumber@demo.com', password: 'plumber123', role: 'provider' },
+    { name: 'Beautician', email: 'beautician@demo.com', password: 'beautician123', role: 'provider' },
+    { name: 'Pest Control', email: 'pestcontrol@demo.com', password: 'pest123', role: 'provider' },
+    { name: 'Electrician', email: 'electrician@demo.com', password: 'electrician123', role: 'provider' },
+  ];
+  try {
+    const results = [];
+    for (const p of providers) {
+      let user = await User.findOne({ email: p.email });
+      if (!user) {
+        const hashedPassword = await bcrypt.hash(p.password, 10);
+        user = new User({ ...p, password: hashedPassword });
+        await user.save();
+        results.push({ email: p.email, status: 'created' });
+      } else {
+        results.push({ email: p.email, status: 'already exists' });
+      }
+    }
+    res.json({ message: 'Providers seeded', results });
+  } catch (err) {
+    res.status(500).json({ message: 'Error seeding providers', error: err.message });
+  }
+});
+
+// Get current user profile
+router.get('/profile', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select('-password');
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update current user profile
+router.patch('/profile', authenticateToken, async (req, res) => {
+  try {
+    const updates = req.body;
+    if (updates.password) delete updates.password; // Prevent password update here
+    const user = await User.findByIdAndUpdate(req.user.userId, updates, { new: true, select: '-password' });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router; 
