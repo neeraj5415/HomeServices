@@ -1,12 +1,19 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function ProviderSidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const linkClass = (path) =>
     `block px-4 py-2 rounded transition ${
       location.pathname === path ? "bg-red-300" : "hover:bg-red-300"
     }`;
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    navigate("/");
+  };
 
   return (
     <aside className="w-64 bg-red-100 text-shadow-lg h-screen p-6 rounded-xl">
@@ -17,6 +24,12 @@ export default function ProviderSidebar() {
         <Link to="/provider/bookings" className={linkClass("/provider/bookings")}>Booking History</Link>
         <Link to="/provider/requests" className={linkClass("/provider/requests")}>All Requests</Link>
       </nav>
+      <button
+        onClick={handleLogout}
+        className="mt-8 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition text-lg font-semibold w-full"
+      >
+        Logout
+      </button>
     </aside>
   );
 }

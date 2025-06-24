@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function BookForm() {
   const { serviceName } = useParams();
@@ -13,16 +13,48 @@ export default function BookForm() {
     notes: "",
   });
 
+  useEffect(() => {
+    // Load Razorpay script
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Service "${serviceName}" booked successfully!`);
-    // Optionally: Send to backend with axios
-    // axios.post('/api/bookings', { ...formData, service: serviceName })
-    navigate("/user/UserDashbord");; // redirect after booking
+    // Razorpay payment integration
+    const options = {
+      key: "rzp_test_1DP5mmOlF5G5ag", // Test key
+      amount: 50000, // Amount in paise (500.00 INR)
+      currency: "INR",
+      name: "Home Services",
+      description: `Booking for ${serviceName}`,
+      handler: function (response) {
+        alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+        navigate("/user/UserDashbord");
+      },
+      prefill: {
+        name: formData.name,
+        email: formData.email,
+      },
+      notes: {
+        address: formData.address,
+        service: serviceName,
+      },
+      theme: {
+        color: "#38a169",
+      },
+    };
+    const rzp = new window.Razorpay(options);
+    rzp.open();
   };
 
   return (
@@ -87,7 +119,7 @@ export default function BookForm() {
           type="submit"
           className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition"
         >
-          Confirm Booking
+          Confirm and Proceed to Payment
         </button>
       </form>
     </div>
