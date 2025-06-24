@@ -13,6 +13,9 @@ export default function HomeHeader() {
     if (userData?.role) {
       setUserRole(userData.role);
     }
+    if (userData?.name) {
+      setUser(userData);
+    }
 
     // Close dropdown when clicking outside
     const handleClickOutside = (event) => {
@@ -83,8 +86,19 @@ export default function HomeHeader() {
             </Link>
           </>
         ) : (
-          <div className="relative" ref={dropdownRef}>
-            <button onClick={() => setDropdownOpen(!dropdownOpen)}>
+          <div className="relative flex items-center gap-2" ref={dropdownRef}>
+            {/* Show username if logged in, styled as a pill */}
+            {user?.name && (
+              <button
+                onClick={handleDashboard}
+                className="flex items-center bg-white rounded-full px-4 py-1 shadow text-blue-700 font-bold text-lg focus:outline-none hover:shadow-lg transition"
+                style={{minWidth: 'fit-content'}}
+              >
+                <span className="mr-2">{user.name}</span>
+                <FaUserCircle className="text-xl align-middle" />
+              </button>
+            )}
+            <button onClick={() => setDropdownOpen(!dropdownOpen)} className="hidden">
               <FaUserCircle className="text-3xl text-blue-800 bg-white rounded-full hover:scale-105 transition duration-200" />
             </button>
 
