@@ -29,7 +29,7 @@ export default function ServicesSection() {
   }, [searchTerm]);
 
   return (
-    <div className="flex min-h-screen pt-30">
+    <div className="flex min-h-screen pt-40">
       <Sidebar />
       <div className="p-6 w-full rounded-xl">
         <h2 className="text-3xl font-bold text-shadow-lg mb-6">

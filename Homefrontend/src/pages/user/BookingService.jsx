@@ -25,7 +25,7 @@ export default function BookingService() {
   };
 
   return (
-    <div className="p-6 min-h-screen bg-gray-50 rounded-xl pt-30">
+    <div className="p-6 min-h-screen bg-gray-50 rounded-xl pt-40">
       <h2 className="text-3xl font-bold text-center text-red-700 mb-8">
         Book a Service
       </h2>

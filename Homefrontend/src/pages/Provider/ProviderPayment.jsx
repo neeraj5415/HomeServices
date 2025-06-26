@@ -5,7 +5,7 @@ export default function ProviderPayment() {
   const { id } = useParams();
 
   return (
-    <div className="flex min-h-screen pt-30">
+    <div className="flex min-h-screen pt-40">
       <Sidebar />
       <main className="flex-1 p-8 rounded-xl">
         <h1 className="text-3xl font-bold mb-6 text-shadow-lg">

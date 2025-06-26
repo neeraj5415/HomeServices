@@ -73,7 +73,7 @@ export default function UsersRequests() {
   };
 
   return (
-    <div className="flex min-h-screen pt-24">
+    <div className="flex min-h-screen pt-40">
       <Sidebar />
       <main className="flex-1 p-6 rounded-xl">
         <h2 className="text-2xl font-bold mb-6 text-shadow-lg">

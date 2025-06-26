@@ -28,7 +28,7 @@ export default function BookingHistory() {
     }, []);
 
     return (
-        <div className='flex min-h-screen bg-white pt-30'>
+        <div className='flex min-h-screen bg-white pt-40'>
             <SideBar/>
             <div className="p-10 rounded-xl w-full">
                 <h2 className="text-2xl font-bold mb-4 text-shadow-lg">My Bookings</h2>

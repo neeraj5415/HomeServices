@@ -96,7 +96,7 @@ export default function BookForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 flex justify-center items-center pt-30">
+    <div className="min-h-screen bg-gray-50 p-6 flex justify-center items-center pt-40">
       <form
         className="bg-white shadow-md rounded-lg p-8 max-w-lg w-full"
       >

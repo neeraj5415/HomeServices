@@ -1,7 +1,7 @@
 import img5 from '../../assets/images/img5.jpg'
 export default function WhoWeAre() {
   return (
-    <section className="bg-blue-100 px-6 py-12 flex flex-col-reverse md:flex-row items-center justify-between gap-8 rounded-xl py-32">
+    <section className="bg-blue-100 px-6 py-12 flex flex-col-reverse md:flex-row items-center justify-between gap-8 rounded-xl py-45">
         <div>
             <h2 className="text-xl font-bold mb-2">WHO ARE WE?</h2>
             <h5 className="text-center text-gray-700">We are a trusted platform connecting customers with skilled service providers...</h5>

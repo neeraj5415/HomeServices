@@ -66,7 +66,7 @@ export default function UserProfile() {
   ];
 
   return (
-    <div className="flex min-h-screen pt-30">
+    <div className="flex min-h-screen pt-40">
       <Sidebar />
       <main className="flex-1 p-8">
         <h2 className="text-2xl font-bold mb-6">User Profile</h2>

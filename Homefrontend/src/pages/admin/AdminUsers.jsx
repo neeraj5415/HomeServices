@@ -42,7 +42,7 @@ export default function AdminUser() {
   );
 
   return (
-    <div className="flex min-h-screen pt-30">
+    <div className="flex min-h-screen pt-40">
       <Sidebar />
       <div className=" p-4 rounded-xl">
       <h1 className="text-xl font-bold text-shadow-lg">All Users</h1>

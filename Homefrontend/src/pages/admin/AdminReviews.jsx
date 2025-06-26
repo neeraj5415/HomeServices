@@ -29,7 +29,7 @@ export default function AdminReviews() {
   ];
 
   return (
-    <div className="flex min-h-screen pt-30">
+    <div className="flex min-h-screen pt-40">
       <Sidebar />
       <main className="flex-1 p-8">
         <h1 className="text-2xl font-bold mb-6">All Ratings & Reviews</h1>

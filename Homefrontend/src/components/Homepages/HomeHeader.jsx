@@ -42,10 +42,10 @@ export default function HomeHeader() {
   };
 
   return (
-    <header className="flex justify-between items-center px-6 py-12 shadow-md bg-gradient-to-r from-blue-600 to-blue-200 text-white rounded-xl fixed top-0 left-0 w-full z-50">
+    <header className="flex justify-between items-center px-6 py-10 shadow-md bg-gradient-to-r from-blue-600 to-blue-200 text-white rounded-xl fixed top-0 left-0 w-full z-50">
       <h1 className="text-xl font-bold text-white">HOME SERVICES</h1>
 
-      <nav className="flex gap-6 items-center relative">
+      <nav className="flex gap-6 items-center relative text-2xl">
         <Link to="/" className="text-gray-800 hover:text-blue-500">Home</Link>
         <Link to="/about" className="text-gray-800 hover:text-blue-500">About Us</Link>
         <Link to="/services" className="text-gray-800 hover:text-blue-500">Services</Link>

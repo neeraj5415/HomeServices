@@ -116,7 +116,7 @@ export default function Home(){
                             {chunk.map((service, index) => (
                             <div
                                 key={service._id}
-                                className={`${bgColors[index % bgColors.length]} p-4 rounded-lg shadow-md text-center hover:shadow-xl hover:scale-112 transform transition duration-300`}
+                                className={`${bgColors[index % bgColors.length]} p-14 rounded-lg shadow-md text-center hover:shadow-xl hover:scale-112 transform transition duration-300`}
                             >
                                 <img
                                 src={service.image}
@@ -192,7 +192,7 @@ export default function Home(){
                         <div className="flex-1 bg-white p-6 rounded-lg shadow-md">
                             <h3 className="text-xl font-semibold mb-4">Get In Touch</h3>
                             <p className="text-gray-700 mb-6">
-                            I'm available for freelance or full-time opportunities. Connect with me via phone or email.
+                            We are available for any query or any questions. Connect with us via phone or email.
                             </p>
 
                             <div className="flex items-center gap-3 mb-4">
