@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { FaUserCircle } from "react-icons/fa";
 
 export default function HomeHeader() {
+  const [user, setUser] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -11,24 +12,23 @@ export default function HomeHeader() {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData?.role) {
+      setUser(userData);
       setUserRole(userData.role);
     }
-    if (userData?.name) {
-      setUser(userData);
-    }
 
-    // Close dropdown when clicking outside
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
+    setUser(null);
     setUserRole(null);
     setDropdownOpen(false);
     navigate("/");
@@ -36,70 +36,35 @@ export default function HomeHeader() {
 
   const handleDashboard = () => {
     setDropdownOpen(false);
-    if (userRole === "user") navigate("/user/profile");
+    if (userRole === "user") navigate("/user/UserDashbord");
     else if (userRole === "provider") navigate("/provider/dashboard");
     else if (userRole === "admin") navigate("/admin/dashboard");
   };
-  // Simulate login state
-  const [user, setUser] = useState(null); // initially logged out
-
-  // Toggle login state (for testing)
-  const toggleLogin = () => {
-    if (user) {
-      setUser(null); // logout
-    } else {
-      setUser({ name: "Test User", role: "user" }); // login
-    }
-  };
 
   return (
-    <header className="flex justify-between items-center px-6 py-4 shadow-md bg-gradient-to-r from-blue-600 to-blue-200 text-white rounded-xl fixed top-0 left-0 w-full z-50">
+    <header className="flex justify-between items-center px-6 py-12 shadow-md bg-gradient-to-r from-blue-600 to-blue-200 text-white rounded-xl fixed top-0 left-0 w-full z-50">
       <h1 className="text-xl font-bold text-white">HOME SERVICES</h1>
 
       <nav className="flex gap-6 items-center relative">
-        <Link to="/" className="text-gray-800 hover:text-blue-500">
-          Home
-        </Link>
-        <Link to="/about" className="text-gray-800 hover:text-blue-500">
-          About Us
-        </Link>
-        <Link to="/services" className="text-gray-800 hover:text-blue-500">
-          Services
-        </Link>
-        <Link to="/contact" className="text-gray-800 hover:text-blue-500">
-          Contact Us
-        </Link>
+        <Link to="/" className="text-gray-800 hover:text-blue-500">Home</Link>
+        <Link to="/about" className="text-gray-800 hover:text-blue-500">About Us</Link>
+        <Link to="/services" className="text-gray-800 hover:text-blue-500">Services</Link>
+        <Link to="/#contact" className="text-gray-800 hover:text-blue-500">Contact Us</Link>
 
         {!userRole ? (
           <>
-            <Link
-              to="/login"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-              SignUp
-            </Link>
+            <Link to="/login" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Login</Link>
+            <Link to="/signup" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">SignUp</Link>
           </>
         ) : (
           <div className="relative flex items-center gap-2" ref={dropdownRef}>
-            {/* Show username if logged in, styled as a pill */}
-            {user?.name && (
-              <button
-                onClick={handleDashboard}
-                className="flex items-center bg-white rounded-full px-4 py-1 shadow text-blue-700 font-bold text-lg focus:outline-none hover:shadow-lg transition"
-                style={{minWidth: 'fit-content'}}
-              >
-                <span className="mr-2">{user.name}</span>
-                <FaUserCircle className="text-xl align-middle" />
-              </button>
-            )}
-            <button onClick={() => setDropdownOpen(!dropdownOpen)} className="hidden">
-              <FaUserCircle className="text-3xl text-blue-800 bg-white rounded-full hover:scale-105 transition duration-200" />
+            <button
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className="flex items-center bg-white rounded-full px-4 py-1 shadow text-blue-700 font-bold text-lg focus:outline-none hover:shadow-lg transition"
+              style={{ minWidth: 'fit-content' }}
+            >
+              <span className="mr-2">{user?.name}</span>
+              <FaUserCircle className="text-xl align-middle" />
             </button>
 
             {dropdownOpen && (

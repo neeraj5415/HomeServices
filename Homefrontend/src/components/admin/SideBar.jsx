@@ -9,12 +9,6 @@ export default function AdminSidebar() {
       location.pathname === path ? "bg-red-400 text-white" : "hover:text-red-400"
     }`;
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    navigate("/");
-  };
-
   return (
     <aside className="w-64 bg-red-100 text-shadow-lg h-screen p-6 rounded-xl">
       <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
@@ -26,12 +20,6 @@ export default function AdminSidebar() {
         <Link to="/admin/bookings" className={linkClass("/admin/bookings")}>Bookings</Link>
         <Link to="/admin/services" className={linkClass("/admin/services")}>Services</Link>
       </nav>
-      <button
-        onClick={handleLogout}
-        className="mt-8 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition text-lg font-semibold w-full"
-      >
-        Logout
-      </button>
     </aside>
   );
 }

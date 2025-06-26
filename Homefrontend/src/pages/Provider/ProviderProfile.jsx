@@ -10,6 +10,7 @@ export default function ProviderProfile() {
     serviceCategory: "Electrician",
     experience: "5 years",
   });
+    const [editMode, setEditMode] = useState(false);
 
   const userReviews = [
     {
@@ -28,7 +29,7 @@ export default function ProviderProfile() {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSave = (e) => {
     e.preventDefault();
     alert("Profile updated successfully!");
   };
@@ -39,77 +40,48 @@ export default function ProviderProfile() {
       <main className="flex-1 p-8">
         <h2 className="text-2xl font-bold mb-6">Provider Profile</h2>
 
-        <form
-          onSubmit={handleSubmit}
-          className="bg-pink-100 shadow-md rounded-lg p-6 max-w-xl"
-        >
-          <div className="mb-4">
-            <label className="block font-semibold mb-1">Full Name</label>
-            <input
-              type="text"
-              name="name"
-              value={profile.name}
-              onChange={handleChange}
-              className="w-full border px-4 py-2 rounded"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block font-semibold mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={profile.email}
-              onChange={handleChange}
-              className="w-full border px-4 py-2 rounded"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block font-semibold mb-1">Phone</label>
-            <input
-              type="text"
-              name="phone"
-              value={profile.phone}
-              onChange={handleChange}
-              className="w-full border px-4 py-2 rounded"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block font-semibold mb-1">Service Category</label>
-            <input
-              type="text"
-              name="serviceCategory"
-              value={profile.serviceCategory}
-              onChange={handleChange}
-              className="w-full border px-4 py-2 rounded"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block font-semibold mb-1">Experience</label>
-            <input
-              type="text"
-              name="experience"
-              value={profile.experience}
-              onChange={handleChange}
-              className="w-full border px-4 py-2 rounded"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-          >
-            Save Changes
-          </button>
-        </form>
+        <div className="bg-white shadow-md rounded-lg p-6 mb-6 max-w-xl">
+          {editMode ? (
+            <>
+              <div className="mb-2">
+                <label className="font-semibold">Full Name : </label>
+                <input name="name" value={form.name} onChange={handleChange} className="border rounded p-1 ml-2" />
+              </div>
+              <div className="mb-2">
+                <label className="font-semibold">Email : </label>
+                <input name="email" value={form.email} onChange={handleChange} className="border rounded p-1 ml-2" />
+              </div>
+              <div className="mb-2">
+                <label className="font-semibold">Phone : </label>
+                <input name="phone" value={form.phone} onChange={handleChange} className="border rounded p-1 ml-2" />
+              </div>
+              <div className="mb-2">
+                <label className="font-semibold">Address: </label>
+                <input name="address" value={form.address} onChange={handleChange} className="border rounded p-1 ml-2" />
+              </div>
+              <div className="mb-2">
+                <label className="font-semibold">Service Category : </label>
+                <input name="address" value={form.address} onChange={handleChange} className="border rounded p-1 ml-2" />
+              </div>
+              <div className="mb-2">
+                <label className="font-semibold">Experience : </label>
+                <input name="address" value={form.address} onChange={handleChange} className="border rounded p-1 ml-2" />
+              </div>
+              <button onClick={handleSave} className="bg-blue-500 text-white px-4 py-1 rounded mr-2">Save</button>
+              <button onClick={() => setEditMode(false)} className="bg-gray-300 px-4 py-1 rounded">Cancel</button>
+            </>
+          ) : (<div></div>)//(
+            // <>
+            //   <p><strong>Name:</strong> {user.name}</p>
+            //   <p><strong>Email:</strong> {user.email}</p>
+            //   <p><strong>Phone:</strong> {user.phone}</p>
+            //   <p><strong>Address:</strong> {user.address}</p>
+            //   <p><strong>Role:</strong> {user.role}</p>
+            //   <button onClick={() => setEditMode(true)} className="mt-4 bg-blue-500 text-white px-4 py-1 rounded">Edit</button>
+            // </>
+          //)
+          }
+        </div>
 
         <div className="mt-10">
           <ReviewList title="User Reviews of You" reviews={userReviews} />

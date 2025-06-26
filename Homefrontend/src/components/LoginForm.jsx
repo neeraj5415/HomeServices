@@ -28,7 +28,7 @@ export default function LoginForm() {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);
         // Redirect based on role
-        if (data.user.role === "user") navigate("/user/UserDashboard");
+        if (data.user.role === "user") navigate("/user/UserDashbord");
         else if (data.user.role === "provider") navigate("/provider/dashboard");
         else if (data.user.role === "admin") navigate("/admin/dashboard");
         else navigate("/");

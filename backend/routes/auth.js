@@ -5,6 +5,8 @@ const User = require('../models/User');
 
 const router = express.Router();
 
+const { authenticateToken } = require('../middleware/auth');
+
 // Signup
 router.post('/signup', async (req, res) => {
   try {
