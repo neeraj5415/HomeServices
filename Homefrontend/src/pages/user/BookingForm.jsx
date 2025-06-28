@@ -17,6 +17,7 @@ export default function BookForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingId, setBookingId] = useState(null);
   const [error, setError] = useState("");
+  const [assignedProvider, setAssignedProvider] = useState(null);
 
   useEffect(() => {
     // Load Razorpay script
@@ -58,7 +59,8 @@ export default function BookForm() {
       } else {
         setBookingConfirmed(true);
         setBookingId(data.booking._id);
-        alert("Booking confirmed! You can now proceed to payment.");
+        setAssignedProvider(data.provider);
+        alert(`Booking confirmed! Your service provider is ${data.provider.name}. You can now proceed to payment.`);
       }
     } catch (err) {
       setError("Network error");
@@ -86,6 +88,7 @@ export default function BookForm() {
       notes: {
         address: formData.address,
         service: serviceName,
+        provider: assignedProvider?.name || "Unknown",
       },
       theme: {
         color: "#38a169",
@@ -104,6 +107,17 @@ export default function BookForm() {
           Book {serviceName}
         </h2>
         {error && <div className="mb-4 text-red-600 text-center">{error}</div>}
+
+        {assignedProvider && (
+          <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+            <p className="text-sm text-blue-800">
+              <strong>Assigned Provider:</strong> {assignedProvider.name}
+            </p>
+            <p className="text-sm text-blue-600">
+              <strong>Email:</strong> {assignedProvider.email}
+            </p>
+          </div>
+        )}
 
         <input
           type="text"

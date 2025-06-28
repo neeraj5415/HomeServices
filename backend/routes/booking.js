@@ -6,23 +6,49 @@ const { authenticateToken, authorizeRoles } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Create a booking (always succeed with dummy provider)
+// Create a booking (assign real provider based on service)
 router.post('/', authenticateToken, async (req, res) => {
   try {
     const { service, date, address, notes } = req.body;
-    // Use a dummy provider ID (valid 24-char hex string for MongoDB)
-    const dummyProviderId = '000000000000000000000000';
+    
+    // Find the service by name
+    const serviceDoc = await Service.findOne({ name: service });
+    if (!serviceDoc) {
+      return res.status(400).json({ message: 'Service not found' });
+    }
+    
+    // Find a provider who offers this service
+    const provider = await User.findOne({
+      role: 'provider',
+      services: serviceDoc._id
+    });
+    
+    if (!provider) {
+      return res.status(400).json({ message: 'No provider available for this service' });
+    }
+    
     const booking = new Booking({
       user: req.user.userId,
-      provider: dummyProviderId,
-      service: service || 'Dummy Service',
+      provider: provider._id,
+      service: service,
       date,
       address,
       notes,
       status: 'pending',
     });
     await booking.save();
-    res.status(201).json({ message: 'Booking created', booking });
+    
+    // Populate provider info for response
+    await booking.populate('provider', 'name email');
+    
+    res.status(201).json({ 
+      message: 'Booking created successfully', 
+      booking,
+      provider: {
+        name: provider.name,
+        email: provider.email
+      }
+    });
   } catch (err) {
     res.status(500).json({ message: 'Error creating booking', error: err.message });
   }
@@ -38,11 +64,11 @@ router.get('/provider', authenticateToken, authorizeRoles('provider'), async (re
   }
 });
 
-// Update booking status (accept/cancel)
+// Update booking status (accept/cancel/complete)
 router.patch('/:id/status', authenticateToken, authorizeRoles('provider'), async (req, res) => {
   try {
     const { status } = req.body;
-    if (!['accepted', 'cancelled'].includes(status)) {
+    if (!['accepted', 'cancelled', 'completed'].includes(status)) {
       return res.status(400).json({ message: 'Invalid status' });
     }
     const booking = await Booking.findOneAndUpdate(

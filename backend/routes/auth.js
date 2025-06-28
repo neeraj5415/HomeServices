@@ -128,15 +128,30 @@ router.put('/providers/:id/services', authenticateToken, require('../middleware/
   try {
     const providerId = req.params.id;
     const { services } = req.body; // Array of service IDs
+    
+    console.log('Updating provider services:', { providerId, services }); // Debug log
+    
+    // Validate that services is an array
+    if (!Array.isArray(services)) {
+      return res.status(400).json({ message: 'Services must be an array' });
+    }
+    
     // Ensure the user is a provider
     const provider = await User.findOneAndUpdate(
       { _id: providerId, role: 'provider' },
       { services },
       { new: true, select: '-password' }
     ).populate('services');
-    if (!provider) return res.status(404).json({ message: 'Provider not found' });
+    
+    if (!provider) {
+      console.log('Provider not found:', providerId); // Debug log
+      return res.status(404).json({ message: 'Provider not found' });
+    }
+    
+    console.log('Provider updated successfully:', provider); // Debug log
     res.json({ message: 'Provider services updated', provider });
   } catch (err) {
+    console.error('Error updating provider services:', err); // Debug log
     res.status(500).json({ message: 'Error updating provider services', error: err.message });
   }
 });

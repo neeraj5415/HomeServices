@@ -12,8 +12,8 @@ export default function ReviewList({ title, reviews }) {
             key={index}
             className="border-b border-gray-200 pb-4 mb-4 last:border-b-0 last:mb-0"
           >
-            <div className="flex items-center mb-1">
-              <span className="font-semibold mr-2">{review.reviewerName}</span>
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-semibold">{review.reviewerName}</span>
               <div className="flex items-center text-yellow-500">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -25,7 +25,11 @@ export default function ReviewList({ title, reviews }) {
                 ))}
               </div>
             </div>
-            <p className="text-gray-700">{review.comment}</p>
+            <p className="text-gray-700 mb-2">{review.comment}</p>
+            <div className="flex justify-between text-sm text-gray-500">
+              {review.service && <span>Service: {review.service}</span>}
+              {review.date && <span>Date: {review.date}</span>}
+            </div>
           </div>
         ))
       )}

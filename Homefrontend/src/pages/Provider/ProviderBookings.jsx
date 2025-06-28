@@ -88,20 +88,40 @@ export default function ProviderBookings() {
                   <strong>Status:</strong> {booking.status}
                 </p>
                 <div className="flex gap-4 mt-2">
-                  <button
-                    className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 disabled:opacity-50"
-                    disabled={booking.status === "accepted"}
-                    onClick={() => updateStatus(booking._id, "accepted")}
-                  >
-                    Accept
-                  </button>
-                  <button
-                    className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 disabled:opacity-50"
-                    disabled={booking.status === "cancelled"}
-                    onClick={() => updateStatus(booking._id, "cancelled")}
-                  >
-                    Cancel
-                  </button>
+                  {booking.status === "pending" && (
+                    <button
+                      onClick={() => updateStatus(booking._id, "accepted")}
+                      className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+                    >
+                      Accept Request
+                    </button>
+                  )}
+                  {booking.status === "accepted" && (
+                    <>
+                      <button
+                        onClick={() => updateStatus(booking._id, "completed")}
+                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                      >
+                        Mark Complete
+                      </button>
+                      <button
+                        onClick={() => updateStatus(booking._id, "cancelled")}
+                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                      >
+                        Cancel Request
+                      </button>
+                    </>
+                  )}
+                  {booking.status === "completed" && (
+                    <span className="px-4 py-2 bg-green-100 text-green-700 rounded">
+                      Completed
+                    </span>
+                  )}
+                  {booking.status === "cancelled" && (
+                    <span className="px-4 py-2 bg-red-100 text-red-700 rounded">
+                      Cancelled
+                    </span>
+                  )}
                 </div>
               </div>
             ))}

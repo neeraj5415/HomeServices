@@ -36,6 +36,9 @@ export default function AdminProvider() {
         const res = await fetch("http://localhost:5000/api/services");
         const data = await res.json();
         setServices(data);
+        if (data.length === 0) {
+          setMessage("No services available. Please add services first.");
+        }
       } catch (err) {
         setMessage("Failed to fetch services");
       }
@@ -50,7 +53,13 @@ export default function AdminProvider() {
   // Open edit services modal
   const handleEditServices = (provider) => {
     setSelectedProvider(provider);
-    setSelectedServices(provider.services ? provider.services.map(s => s._id) : []);
+    // Fix: Handle both populated and unpopulated services
+    const currentServices = provider.services || [];
+    const serviceIds = currentServices.map(s => {
+      // If service is populated (has _id), use _id, otherwise use the service itself
+      return typeof s === 'object' && s._id ? s._id : s;
+    });
+    setSelectedServices(serviceIds);
     setEditMode(true);
     setMessage("");
   };
@@ -61,6 +70,8 @@ export default function AdminProvider() {
     setMessage("");
     try {
       const token = localStorage.getItem("token");
+      console.log("Sending services:", selectedServices); // Debug log
+      
       const res = await fetch(`http://localhost:5000/api/auth/providers/${selectedProvider._id}/services`, {
         method: "PUT",
         headers: {
@@ -69,7 +80,10 @@ export default function AdminProvider() {
         },
         body: JSON.stringify({ services: selectedServices }),
       });
+      
       const data = await res.json();
+      console.log("Response:", data); // Debug log
+      
       if (res.ok) {
         setMessage("Services updated successfully");
         // Update local state
@@ -79,6 +93,7 @@ export default function AdminProvider() {
         setMessage(data.message || "Failed to update services");
       }
     } catch (err) {
+      console.error("Error updating services:", err); // Debug log
       setMessage("Failed to update services");
     }
     setLoading(false);
@@ -154,24 +169,30 @@ export default function AdminProvider() {
             <h2 className="text-xl font-bold mb-4">Edit Services for {selectedProvider.name}</h2>
             <div className="mb-4">
               <label className="block mb-2 font-semibold">Assign Services:</label>
-              <select
-                multiple
-                className="w-full border rounded p-2"
-                value={selectedServices}
-                onChange={e => {
-                  const options = Array.from(e.target.options);
-                  setSelectedServices(options.filter(o => o.selected).map(o => o.value));
-                }}
-              >
-                {services.map(service => (
-                  <option key={service._id} value={service._id}>{service.name}</option>
-                ))}
-              </select>
+              {services.length === 0 ? (
+                <div className="text-red-600 mb-4">
+                  No services available. Please add services first through the Services page.
+                </div>
+              ) : (
+                <select
+                  multiple
+                  className="w-full border rounded p-2"
+                  value={selectedServices}
+                  onChange={e => {
+                    const options = Array.from(e.target.options);
+                    setSelectedServices(options.filter(o => o.selected).map(o => o.value));
+                  }}
+                >
+                  {services.map(service => (
+                    <option key={service._id} value={service._id}>{service.name}</option>
+                  ))}
+                </select>
+              )}
             </div>
             <button
               onClick={handleSaveServices}
               className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
-              disabled={loading}
+              disabled={loading || services.length === 0}
             >
               {loading ? "Saving..." : "Save"}
             </button>

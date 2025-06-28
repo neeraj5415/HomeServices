@@ -8,12 +8,14 @@ export default function UserProfile() {
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", address: "" });
   const [loading, setLoading] = useState(true);
+  const [reviews, setReviews] = useState([]);
+  const [reviewsLoading, setReviewsLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("/api/auth/profile", {
+        const res = await axios.get("http://localhost:5000/api/auth/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
@@ -23,6 +25,7 @@ export default function UserProfile() {
           phone: res.data.phone || "",
           address: res.data.address || "",
         });
+        fetchReviews(res.data._id);
       } catch (err) {
         // handle error
       } finally {
@@ -32,6 +35,28 @@ export default function UserProfile() {
     fetchProfile();
   }, []);
 
+  const fetchReviews = async (userId) => {
+    try {
+      setReviewsLoading(true);
+      const res = await fetch(`http://localhost:5000/api/reviews/user/${userId}`);
+      const data = await res.json();
+      
+      if (res.ok) {
+        setReviews(data.reviews.map(review => ({
+          reviewerName: review.reviewer.name,
+          rating: review.rating,
+          comment: review.comment,
+          date: new Date(review.createdAt).toLocaleDateString(),
+          service: review.booking.service
+        })));
+      }
+    } catch (err) {
+      console.error("Failed to fetch reviews:", err);
+    } finally {
+      setReviewsLoading(false);
+    }
+  };
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -39,7 +64,7 @@ export default function UserProfile() {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.patch("/api/auth/profile", form, {
+      const res = await axios.patch("http://localhost:5000/api/auth/profile", form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(res.data);
@@ -52,42 +77,30 @@ export default function UserProfile() {
   if (loading) return <div>Loading...</div>;
   if (!user) return <div>Profile not found</div>;
 
-  const providerReviews = [
-    {
-      reviewerName: "Ravi Provider",
-      rating: 5,
-      comment: "Great experience with Neeraj. Very polite and punctual!",
-    },
-    {
-      reviewerName: "Asha Service",
-      rating: 4,
-      comment: "Smooth communication and prompt response.",
-    },
-  ];
-
   return (
     <div className="flex min-h-screen pt-40">
       <Sidebar />
       <main className="flex-1 p-8">
         <h2 className="text-2xl font-bold mb-6">User Profile</h2>
+
         <div className="bg-white shadow-md rounded-lg p-6 mb-6 max-w-xl">
           {editMode ? (
             <>
               <div className="mb-2">
-                <label className="font-semibold">Name: </label>
+                <label className="font-semibold">Full Name : </label>
                 <input name="name" value={form.name} onChange={handleChange} className="border rounded p-1 ml-2" />
               </div>
               <div className="mb-2">
-                <label className="font-semibold">Email: </label>
-                <input name="email" value={form.email} onChange={handleChange} className="border rounded p-1 ml-2" placeholder="enter email address" />
+                <label className="font-semibold">Email : </label>
+                <input name="email" value={form.email} onChange={handleChange} className="border rounded p-1 ml-2" />
               </div>
               <div className="mb-2">
-                <label className="font-semibold">Phone: </label>
+                <label className="font-semibold">Phone : </label>
                 <input name="phone" value={form.phone} onChange={handleChange} className="border rounded p-1 ml-2" />
               </div>
               <div className="mb-2">
                 <label className="font-semibold">Address: </label>
-                <input name="address" value={form.address} onChange={handleChange} className="border rounded p-1 ml-2" placeholder="enter address" />
+                <input name="address" value={form.address} onChange={handleChange} className="border rounded p-1 ml-2" />
               </div>
               <button onClick={handleSave} className="bg-blue-500 text-white px-4 py-1 rounded mr-2">Save</button>
               <button onClick={() => setEditMode(false)} className="bg-gray-300 px-4 py-1 rounded">Cancel</button>
@@ -103,7 +116,14 @@ export default function UserProfile() {
             </>
           )}
         </div>
-        <ReviewList title="Provider Reviews of You" reviews={providerReviews} />
+        
+        {reviewsLoading ? (
+          <div className="text-center">
+            <p className="text-gray-600">Loading reviews...</p>
+          </div>
+        ) : (
+          <ReviewList title="Provider Reviews of You" reviews={reviews} />
+        )}
       </main>
     </div>
   );
