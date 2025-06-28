@@ -41,20 +41,29 @@ export default function HomeHeader() {
     else if (userRole === "admin") navigate("/admin/dashboard");
   };
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <header className="flex justify-between items-center px-6 py-10 shadow-md bg-gradient-to-r from-blue-600 to-blue-200 text-white rounded-xl fixed top-0 left-0 w-full z-50">
       <h1 className="text-xl font-bold text-white">HOME SERVICES</h1>
 
-      <nav className="flex gap-6 items-center relative text-2xl">
-        <Link to="/" className="text-gray-800 hover:text-blue-500">Home</Link>
-        <Link to="/about" className="text-gray-800 hover:text-blue-500">About Us</Link>
-        <Link to="/services" className="text-gray-800 hover:text-blue-500">Services</Link>
-        <Link to="/#contact" className="text-gray-800 hover:text-blue-500">Contact Us</Link>
+      <button
+      className="lg:hidden text-white text-3xl focus:outline-none"
+      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+    >
+      ☰
+    </button>
+
+      <nav  className={`lg:flex gap-6 items-center relative text-2xl ${isMobileMenuOpen ? 'flex flex-col absolute top-full left-0 bg-white text-black w-full p-6 z-50' : 'hidden'} lg:static lg:bg-transparent lg:w-auto`}>
+        <Link to="/" className="text-gray-800 hover:text-blue-500 lg:inline-block py-2">Home</Link>
+        <Link to="/about" className="text-gray-800 hover:text-blue-500 lg:inline-block py-2">About Us</Link>
+        <Link to="/services" className="text-gray-800 hover:text-blue-500 lg:inline-block py-2">Services</Link>
+        <Link to="/#contact" className="text-gray-800 hover:text-blue-500 lg:inline-block py-2">Contact Us</Link>
 
         {!userRole ? (
           <>
-            <Link to="/login" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Login</Link>
-            <Link to="/signup" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">SignUp</Link>
+            <Link to="/login" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 lg:inline-block mt-2 lg:mt-0">Login</Link>
+            <Link to="/signup" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 lg:inline-block mt-2 lg:mt-0">SignUp</Link>
           </>
         ) : (
           <div className="relative flex items-center gap-2" ref={dropdownRef}>
