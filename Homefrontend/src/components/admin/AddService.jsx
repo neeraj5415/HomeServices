@@ -24,7 +24,7 @@ export default function AddServiceForm({ onServiceAdded }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-red-50 p-6 rounded-lg shadow mb-8">
+    <form onSubmit={handleSubmit} className="bg-red-100 p-6 rounded-lg shadow text-shadow-lg">
       <h3 className="text-xl font-semibold mb-4">Add New Service</h3>
       <div className="mb-4">
         <input

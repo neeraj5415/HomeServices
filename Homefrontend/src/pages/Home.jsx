@@ -76,7 +76,7 @@ export default function Home(){
         }, [location]);
 
     return(
-        <div className="bg-white pt-60">
+        <div className="bg-white pt-30">
             <section  className="bg-cover bg-center bg-no-repeat h-[450px] flex flex-col justify-center items-center text-center text-white px-4 mt-10 rounded-xl"
             style={{ backgroundImage: `url(${bi})`}}>
                 <h1 className="text-4xl font-bold mb-4 text-shadow-lg">Book Services At Your Doorstep</h1>
@@ -146,9 +146,18 @@ export default function Home(){
             </section>
 
 
-            <div className="mb-5 mt-5 min-h-80 flex flex-row items-center justify-center text-2xl font-semibold hover:shadow-xl hover:scale-112 transform transition duration-300">
-                <div className='text-shadow-lg mr-20 '>Hyperlocal Service Booking Plateform <br/>Where any service is provided at your home</div>
-                <img className="h-60 w-116 object-scale-down drop-shadow-2xl mr-3 animate-pulse rounded-xl hover:shadow-xl hover:scale-112 transform transition duration-300" src={vg}/>
+            <div className="my-10 min-h-80 flex flex-col md:flex-row items-center justify-center text-xl md:text-2xl font-semibold hover:shadow-xl hover:scale-105 transform transition duration-300 px-4">
+                <div className="text-center md:text-left mb-6 md:mb-0 md:mr-10">
+                    Hyperlocal Service Booking Platform
+                    <br />
+                    Where any service is provided at your home
+                </div>
+
+                <img
+                    className="h-48 w-auto md:h-60 object-scale-down drop-shadow-2xl rounded-xl hover:shadow-xl hover:scale-105 transform transition duration-300"
+                    src={vg}
+                    alt="Service Illustration"
+                />
             </div>
             <WhoWeAre/>
             <div>
