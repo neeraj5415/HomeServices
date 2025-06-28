@@ -1,44 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from '../../components/admin/SideBar.jsx'
-
-// Sample static user data
-const sampleUsers = [
-  {
-    id: 1,
-    name: "Neeraj Kumar",
-    email: "neeraj@example.com",
-    phone: "9876543210",
-    city: "Delhi",
-    joined: "2023-11-10",
-    status: "Active",
-  },
-  {
-    id: 2,
-    name: "Pooja Singh",
-    email: "pooja@example.com",
-    phone: "9871234567",
-    city: "Mumbai",
-    joined: "2024-02-15",
-    status: "Inactive",
-  },
-  {
-    id: 3,
-    name: "Ravi Sharma",
-    email: "ravi@example.com",
-    phone: "9879876543",
-    city: "Bangalore",
-    joined: "2023-08-22",
-    status: "Active",
-  },
-];
+import axios from "axios";
 
 export default function AdminUser() {
   const [search, setSearch] = useState("");
-  const [users] = useState(sampleUsers);
+  const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("/api/auth/all-users", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUsers(res.data);
+      } catch (err) {
+        setError("Failed to fetch users");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const filteredUsers = users.filter((user) =>
-    (user.name + user.email + user.city).toLowerCase().includes(search.toLowerCase())
+    (user.name + user.email + (user.city || "")).toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -56,19 +47,25 @@ export default function AdminUser() {
         />
       </div>
 
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="text-red-600">{error}</p>
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredUsers.map((user) => (
           <div
-            key={user.id}
+            key={user._id}
             onClick={() => setSelectedUser(user)}
             className="cursor-pointer bg-blue-100 p-4 rounded-xl shadow hover:shadow-md transition"
           >
             <h2 className="text-xl font-semibold">{user.name}</h2>
             <p className="">{user.email}</p>
-            <p className="text-sm">{user.city}</p>
+            <p className="text-sm">{user.city || "-"}</p>
           </div>
         ))}
       </div>
+      )}
 
       {selectedUser && (
         <div className="mt-8 bg-pink-100 p-6 rounded-xl shadow-md border">
@@ -77,10 +74,10 @@ export default function AdminUser() {
           </h2>
           <p><strong>Name:</strong> {selectedUser.name}</p>
           <p><strong>Email:</strong> {selectedUser.email}</p>
-          <p><strong>Phone:</strong> {selectedUser.phone}</p>
-          <p><strong>City:</strong> {selectedUser.city}</p>
-          <p><strong>Joined:</strong> {selectedUser.joined}</p>
-          <p><strong>Status:</strong> {selectedUser.status}</p>
+          <p><strong>Phone:</strong> {selectedUser.phone || "-"}</p>
+          <p><strong>City:</strong> {selectedUser.city || "-"}</p>
+          <p><strong>Joined:</strong> {selectedUser.createdAt ? new Date(selectedUser.createdAt).toLocaleDateString() : "-"}</p>
+          <p><strong>Status:</strong> {selectedUser.status || "-"}</p>
 
           <button
             onClick={() => setSelectedUser(null)}

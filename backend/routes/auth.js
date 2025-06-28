@@ -113,4 +113,32 @@ router.patch('/profile', authenticateToken, async (req, res) => {
   }
 });
 
+// Get all users (admin only)
+router.get('/all-users', authenticateToken, require('../middleware/auth').authorizeRoles('admin'), async (req, res) => {
+  try {
+    const users = await User.find().select('-password').populate('services');
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
+// Update provider's services (admin only)
+router.put('/providers/:id/services', authenticateToken, require('../middleware/auth').authorizeRoles('admin'), async (req, res) => {
+  try {
+    const providerId = req.params.id;
+    const { services } = req.body; // Array of service IDs
+    // Ensure the user is a provider
+    const provider = await User.findOneAndUpdate(
+      { _id: providerId, role: 'provider' },
+      { services },
+      { new: true, select: '-password' }
+    ).populate('services');
+    if (!provider) return res.status(404).json({ message: 'Provider not found' });
+    res.json({ message: 'Provider services updated', provider });
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating provider services', error: err.message });
+  }
+});
+
 module.exports = router; 

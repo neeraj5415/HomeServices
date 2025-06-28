@@ -79,7 +79,7 @@ export default function UserProfile() {
               </div>
               <div className="mb-2">
                 <label className="font-semibold">Email: </label>
-                <input name="email" value={form.email} onChange={handleChange} className="border rounded p-1 ml-2" />
+                <input name="email" value={form.email} onChange={handleChange} className="border rounded p-1 ml-2" placeholder="enter email address" />
               </div>
               <div className="mb-2">
                 <label className="font-semibold">Phone: </label>
@@ -87,7 +87,7 @@ export default function UserProfile() {
               </div>
               <div className="mb-2">
                 <label className="font-semibold">Address: </label>
-                <input name="address" value={form.address} onChange={handleChange} className="border rounded p-1 ml-2" />
+                <input name="address" value={form.address} onChange={handleChange} className="border rounded p-1 ml-2" placeholder="enter address" />
               </div>
               <button onClick={handleSave} className="bg-blue-500 text-white px-4 py-1 rounded mr-2">Save</button>
               <button onClick={() => setEditMode(false)} className="bg-gray-300 px-4 py-1 rounded">Cancel</button>
@@ -95,9 +95,9 @@ export default function UserProfile() {
           ) : (
             <>
               <p><strong>Name:</strong> {user.name}</p>
-              <p><strong>Email:</strong> {user.email}</p>
+              <p><strong>Email:</strong> {user.email ? user.email : <span style={{color:'#b0b0b0'}}>enter email address</span>}</p>
               <p><strong>Phone:</strong> {user.phone}</p>
-              <p><strong>Address:</strong> {user.address}</p>
+              <p><strong>Address:</strong> {user.address ? user.address : <span style={{color:'#b0b0b0'}}>enter address</span>}</p>
               <p><strong>Role:</strong> {user.role}</p>
               <button onClick={() => setEditMode(true)} className="mt-4 bg-blue-500 text-white px-4 py-1 rounded">Edit</button>
             </>

@@ -76,7 +76,7 @@ export default function Home(){
         }, [location]);
 
     return(
-        <div className="bg-white pt-30">
+        <div className="bg-white pt-60">
             <section  className="bg-cover bg-center bg-no-repeat h-[450px] flex flex-col justify-center items-center text-center text-white px-4 mt-10 rounded-xl"
             style={{ backgroundImage: `url(${bi})`}}>
                 <h1 className="text-4xl font-bold mb-4 text-shadow-lg">Book Services At Your Doorstep</h1>
