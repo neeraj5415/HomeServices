@@ -174,19 +174,19 @@ export default function AdminProvider() {
                   No services available. Please add services first through the Services page.
                 </div>
               ) : (
-                <select
-                  multiple
-                  className="w-full border rounded p-2"
-                  value={selectedServices}
-                  onChange={e => {
-                    const options = Array.from(e.target.options);
-                    setSelectedServices(options.filter(o => o.selected).map(o => o.value));
-                  }}
-                >
-                  {services.map(service => (
-                    <option key={service._id} value={service._id}>{service.name}</option>
-                  ))}
-                </select>
+              <select
+                multiple
+                className="w-full border rounded p-2"
+                value={selectedServices}
+                onChange={e => {
+                  const options = Array.from(e.target.options);
+                  setSelectedServices(options.filter(o => o.selected).map(o => o.value));
+                }}
+              >
+                {services.map(service => (
+                  <option key={service._id} value={service._id}>{service.name}</option>
+                ))}
+              </select>
               )}
             </div>
             <button
