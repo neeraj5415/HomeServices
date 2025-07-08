@@ -16,7 +16,7 @@ import BookingHistory from './pages/user/BookingHistory.jsx';
 
 import ProviderDashboard from "./pages/Provider/ProviderDashboard.jsx";
 import ProviderProfile from "./pages/Provider/ProviderProfile.jsx";
-import SubmitReviewToUser from "./pages/provider/SubmitReviewToUser.jsx";
+import SubmitReviewToUser from "./pages/Provider/SubmitReviewToUser.jsx";
 import ProviderBookings from "./pages/Provider/ProviderBookings.jsx";
 import UsersRequests from "./pages/Provider/UserRequest.jsx";
 import ProviderPayment from "./pages/Provider/ProviderPayment.jsx";
