@@ -2,7 +2,7 @@ import { Star } from "lucide-react";
 
 export default function ReviewList({ title, reviews }) {
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 mt-6 pt-30">
+    <div className="bg-pink-100 shadow-md rounded-lg p-6 mt-6 pt-5">
       <h3 className="text-xl font-semibold mb-4">{title}</h3>
       {reviews.length === 0 ? (
         <p className="text-gray-500">No reviews yet.</p>

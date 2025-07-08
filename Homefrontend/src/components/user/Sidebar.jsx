@@ -16,7 +16,7 @@ export default function Sidebar() {
         <Link to="/user/UserDashbord" className={linkClass("/user/UserDashbord")}>Dashboard</Link>
         <Link to="/user/profile" className={linkClass("/user/profile")}>Profile</Link>
         <Link to="/user/bookings" className={linkClass("/user/bookings")}>Booking History</Link>
-        <Link to="/user/settings" className={linkClass("/user/settings")}>Settings</Link>
+        <Link to="/" className={linkClass("/")}>Settings</Link>
       </nav>
     </aside>
   );
