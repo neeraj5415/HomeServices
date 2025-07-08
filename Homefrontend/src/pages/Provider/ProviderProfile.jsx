@@ -23,7 +23,7 @@ export default function ProviderProfile() {
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/auth/profile", {
+      const res = await fetch("http://homeservices-5vng.onrender.com/api/auth/profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -45,13 +45,13 @@ export default function ProviderProfile() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/auth/profile", {
+      const res = await fetch("http://homeservices-5vng.onrender.com/api/auth/profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const userData = await res.json();
       
       if (res.ok && userData._id) {
-        const reviewsRes = await fetch(`http://localhost:5000/api/reviews/user/${userData._id}`);
+        const reviewsRes = await fetch(`http://homeservices-5vng.onrender.com/api/reviews/user/${userData._id}`);
         const reviewsData = await reviewsRes.json();
         
         if (reviewsRes.ok) {

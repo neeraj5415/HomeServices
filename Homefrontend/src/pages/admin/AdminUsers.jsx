@@ -14,7 +14,7 @@ export default function AdminUser() {
     setMessage("");
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("/api/auth/all-users", {
+      const res = await fetch("https://homeservices-5vng.onrender.com/api/auth/all-users", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();

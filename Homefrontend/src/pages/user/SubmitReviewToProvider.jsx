@@ -22,7 +22,7 @@ export default function SubmitReviewToProvider() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/bookings/user", {
+      const res = await fetch("http://homeservices-5vng.onrender.com/api/bookings/user", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -51,7 +51,7 @@ export default function SubmitReviewToProvider() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/reviews", {
+      const res = await fetch("http://homeservices-5vng.onrender.com/api/reviews", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

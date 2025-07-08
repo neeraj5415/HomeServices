@@ -31,7 +31,7 @@ export default function AdminReviews() {
         // Fetch reviews for providers (reviews given to providers)
         const providerReviewsData = [];
         for (const provider of providers) {
-          const reviewsRes = await fetch(`http://localhost:5000/api/reviews/user/${provider._id}`);
+          const reviewsRes = await fetch(`http://homeservices-5vng.onrender.com/api/reviews/user/${provider._id}`);
           const reviewsData = await reviewsRes.json();
           
           if (reviewsRes.ok) {
@@ -50,7 +50,7 @@ export default function AdminReviews() {
         // Fetch reviews for users (reviews given to users)
         const userReviewsData = [];
         for (const user of users) {
-          const reviewsRes = await fetch(`http://localhost:5000/api/reviews/user/${user._id}`);
+          const reviewsRes = await fetch(`http://homeservices-5vng.onrender.com/api/reviews/user/${user._id}`);
           const reviewsData = await reviewsRes.json();
           
           if (reviewsRes.ok) {

@@ -40,7 +40,7 @@ export default function BookForm() {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/bookings", {
+      const res = await fetch("http://homeservices-5vng.onrender.com/api/bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

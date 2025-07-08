@@ -15,7 +15,7 @@ export default function AddServiceForm({ onServiceAdded }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/services", formData);
+      await axios.post("http://homeservices-5vng.onrender.com/api/services", formData);
       onServiceAdded(); // notify parent to refetch
       setFormData({ name: "", description: "", image: "" }); // reset
     } catch (error) {

@@ -15,7 +15,7 @@ export default function UserProfile() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/auth/profile", {
+        const res = await axios.get("http://homeservices-5vng.onrender.com/api/auth/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
@@ -38,7 +38,7 @@ export default function UserProfile() {
   const fetchReviews = async (userId) => {
     try {
       setReviewsLoading(true);
-      const res = await fetch(`http://localhost:5000/api/reviews/user/${userId}`);
+      const res = await fetch(`http://homeservices-5vng.onrender.com/api/reviews/user/${userId}`);
       const data = await res.json();
       
       if (res.ok) {
@@ -64,7 +64,7 @@ export default function UserProfile() {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.patch("http://localhost:5000/api/auth/profile", form, {
+      const res = await axios.patch("http://homeservices-5vng.onrender.com/api/auth/profile", form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(res.data);
