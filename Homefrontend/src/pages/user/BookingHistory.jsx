@@ -14,7 +14,7 @@ export default function BookingHistory() {
             setError("");
             try {
                 const token = localStorage.getItem("token");
-                const res = await fetch("http://homeservices-5vng.onrender.com/api/bookings/user", {
+                const res = await fetch("https://homeservices-5vng.onrender.com/api/bookings/user", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 const data = await res.json();

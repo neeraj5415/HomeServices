@@ -12,7 +12,7 @@ export default function ProviderBookings() {
       setError("");
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://homeservices-5vng.onrender.com/api/bookings/provider", {
+        const res = await fetch("https://homeservices-5vng.onrender.com/api/bookings/provider", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -30,7 +30,7 @@ export default function ProviderBookings() {
   const updateStatus = async (id, status) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://homeservices-5vng.onrender.com/api/bookings/${id}/status`, {
+      const res = await fetch(`https://homeservices-5vng.onrender.com/api/bookings/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

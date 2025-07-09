@@ -15,7 +15,7 @@ export default function AdminProvider() {
   const fetchProviders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://homeservices-5vng.onrender.com/api/auth/all-users", {
+      const res = await fetch("https://homeservices-5vng.onrender.com/api/auth/all-users", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -33,7 +33,7 @@ export default function AdminProvider() {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await fetch("http://homeservices-5vng.onrender.com/api/services");
+        const res = await fetch("https://homeservices-5vng.onrender.com/api/services");
         const data = await res.json();
         setServices(data);
         if (data.length === 0) {
@@ -72,7 +72,7 @@ export default function AdminProvider() {
       const token = localStorage.getItem("token");
       console.log("Sending services:", selectedServices); // Debug log
       
-      const res = await fetch(`http://homeservices-5vng.onrender.com/api/auth/providers/${selectedProvider._id}/services`, {
+      const res = await fetch(`https://homeservices-5vng.onrender.com/api/auth/providers/${selectedProvider._id}/services`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

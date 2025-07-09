@@ -18,7 +18,7 @@ export default function BookingService() {
       setLoading(true);
       setError("");
       // Use the new endpoint that only returns services with providers
-      const res = await axios.get(`http://homeservices-5vng.onrender.com/api/services/available?q=${query}`);
+      const res = await axios.get(`https://homeservices-5vng.onrender.com/api/services/available?q=${query}`);
       setServices(res.data);
     } catch (err) {
       console.error("Failed to fetch services:", err);

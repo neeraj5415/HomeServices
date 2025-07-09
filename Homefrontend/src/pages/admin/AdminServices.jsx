@@ -17,7 +17,7 @@ export default function ServicesSection() {
   const fetchServices = async () => {
     try {
       const res = await axios.get(
-        `http://homeservices-5vng.onrender.com/api/services?q=${searchTerm}`
+        `https://homeservices-5vng.onrender.com/api/services?q=${searchTerm}`
       );
       setServices(res.data);
     } catch (error) {
